@@ -3,7 +3,33 @@ POST http://localhost:3000/api/posts/2/comments
 Content-Type: application/json
 
 {
-    "nickname": "tester1",
-	"content": "first comment",
-	"password": "tester1"
+    "nickname": "tester2",
+	"content": "second comment",
+	"password": "tester2"
+}
+
+
+
+###댓글 조회
+GET http://localhost:3000/api/posts/2/comments?page=1&pageSize=10
+
+
+
+###댓글 수정
+PUT http://localhost:3000/api/comments/1
+Content-Type: application/json
+
+{
+    "nickname": "updatedUser",
+    "content": "This is the updated comment.",
+    "password": "tester2"
+}
+
+
+###댓글 삭제
+DELETE http://localhost:3000/api/comments/1
+Content-Type: application/json
+
+{
+    "password":"tester1"
 }

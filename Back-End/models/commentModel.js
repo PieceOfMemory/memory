@@ -42,3 +42,29 @@ exports.getCommentsByPostId = async(postId, page, pageSize) => {
 
     return { comments, totalItemCount };
 };
+
+
+//댓글 수정
+exports.getCommentById = async(commentId) => {
+    const query = 'SELECT * FROM comments WHERE id = ?';
+    const [result] = await db.query(query, [commentId]);
+    return result.length ? result[0] : null;
+};
+
+exports.updateComment = async(commentId, nickname, content) => {
+    const query = `
+        UPDATE comments
+        SET nickname = ?, content = ?, createdAt = ?
+        WHERE id = ?`;
+    const values = [nickname, content, new Date(), commentId];
+    const [result] = await db.query(query, values);
+    return result;
+};
+
+
+//댓글 삭제
+exports.deleteComment = async(commentId) => {
+    const query = 'DELETE FROM comments WHERE id = ?';
+    const [result] = await db.query(query, [commentId]);
+    return result;
+};
