@@ -14,6 +14,10 @@ router.put('/posts/:postId', postController.updatePost);
 //게시글 삭제
 router.delete('/posts/:postId', postController.deletePost);
 
+//게시글 상세 조회
 router.get('/posts/:postId', postController.getPostDetails);
+
+//게시글 조회 권한 확인
+router.post('/posts/:postId/verify-password', postController.verifyPostPassword)
 
 module.exports = router;

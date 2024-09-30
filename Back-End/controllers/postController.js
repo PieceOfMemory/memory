@@ -215,3 +215,33 @@ exports.getPostDetails = async(req, res) => {
         res.status(500).json({ message: "게시글 조회에 실패했습니다." });
     }
 };
+
+exports.verifyPostPassword = async(req, res) => {
+    try {
+        const { postId } = req.params;
+        const { postPassword } = req.body;
+
+        // 필수 데이터 유효성 검증
+        if (!postId || !postPassword) {
+            return res.status(400).json({ message: "잘못된 요청입니다" });
+        }
+
+        // 게시글 조회
+        const post = await postModel.getPostById(postId);
+        if (!post) {
+            return res.status(404).json({ message: "존재하지 않습니다" });
+        }
+
+        // 비밀번호 검증
+        const isMatch = await bcrypt.compare(postPassword, post.postPassword);
+        if (!isMatch) {
+            return res.status(403).json({ message: "비밀번호가 틀렸습니다" });
+        }
+
+        // 비밀번호가 일치하는 경우
+        res.status(200).json({ message: "비밀번호가 일치합니다" });
+    } catch (error) {
+        console.error("Error verifying post password:", error);
+        res.status(500).json({ message: "비밀번호 검증에 실패했습니다." });
+    }
+};

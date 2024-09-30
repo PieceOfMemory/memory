@@ -48,3 +48,12 @@ Content-Type: application/json
 
 ###게시글 상세정보
 GET http://localhost:3000/api/posts/2
+
+
+### 게시글 조회 권한 확인
+POST http://localhost:3000/api/posts/2/verify-password
+Content-Type: application/json
+
+{
+	"postPassword": "password456"
+}
