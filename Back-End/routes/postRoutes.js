@@ -24,6 +24,6 @@ router.post('/posts/:postId/verify-password', postController.verifyPostPassword)
 router.post('/posts/:postId/like', postController.likePost);
 
 //게시글 공개 여부 확인
-router.post('/posts/:postId/is-public', postController.getPostPublicStatus);
+router.get('/posts/:postId/is-public', postController.getPostPublicStatus);
 
 module.exports = router;
