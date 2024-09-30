@@ -44,3 +44,7 @@ Content-Type: application/json
 {
 	"postPassword":"password456"
 }
+
+
+###게시글 상세정보
+GET http://localhost:3000/api/posts/2

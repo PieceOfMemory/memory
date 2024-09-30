@@ -197,3 +197,21 @@ exports.deletePost = async(req, res) => {
         res.status(500).json({ message: "게시글 삭제에 실패했습니다." });
     }
 };
+
+exports.getPostDetails = async(req, res) => {
+    try {
+        const { postId } = req.params;
+
+        // 게시글 조회
+        const post = await postModel.getPostById(postId);
+        if (!post) {
+            return res.status(404).json({ message: "존재하지 않습니다" });
+        }
+
+
+        res.status(200).json(post);
+    } catch (error) {
+        console.error("Error retrieving post details:", error);
+        res.status(500).json({ message: "게시글 조회에 실패했습니다." });
+    }
+};
