@@ -1,0 +1,9 @@
+###댓글 등록
+POST http://localhost:3000/api/posts/2/comments
+Content-Type: application/json
+
+{
+    "nickname": "tester1",
+	"content": "first comment",
+	"password": "tester1"
+}
