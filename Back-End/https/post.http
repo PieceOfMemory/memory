@@ -57,3 +57,7 @@ Content-Type: application/json
 {
 	"postPassword": "password456"
 }
+
+
+###게시글 공감하기
+POST http://localhost:3000/api/posts/2/like

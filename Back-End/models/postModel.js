@@ -132,3 +132,10 @@ exports.deletePost = async(postId) => {
     const [result] = await db.query(query, [postId]);
     return result;
 };
+
+//게시글 공감하기 countlike
+exports.incrementLikeCount = async(postId) => {
+    const query = 'UPDATE posts SET likeCount = likeCount + 1 WHERE id = ?';
+    const [result] = await db.query(query, [postId]);
+    return result;
+};

@@ -245,3 +245,28 @@ exports.verifyPostPassword = async(req, res) => {
         res.status(500).json({ message: "비밀번호 검증에 실패했습니다." });
     }
 };
+
+//게시글 공감하기
+exports.likePost = async(req, res) => {
+    try {
+        const { postId } = req.params;
+
+        // 게시글 조회
+        const post = await postModel.getPostById(postId);
+        if (!post) {
+            return res.status(404).json({ message: "존재하지 않습니다" });
+        }
+
+        // 공감 수 증가
+        await postModel.incrementLikeCount(postId);
+
+        // 증가된 likeCount를 반환
+        res.status(200).json({
+            message: "게시글에 공감하였습니다",
+            likeCount: post.likeCount + 1
+        });
+    } catch (error) {
+        console.error("Error liking post:", error);
+        res.status(500).json({ message: "게시글 공감에 실패했습니다." });
+    }
+};
