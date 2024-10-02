@@ -1,0 +1,80 @@
+### 그룹 등록
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+    "name": "example",
+    "password": "m123",
+    "imageUrl": "http://example.com/images/music.jpg",
+    "isPublic": true,
+    "introduction": "A place for musicians to collaborate and share their work."
+}
+
+
+
+### 그룹 수정 요청 (PUT)
+PUT http://localhost:3000/api/groups/15
+Content-Type: application/json
+
+{
+    "name": "example",
+    "password": "m123",
+    "imageUrl": "http://example.com/images/diy.jpg",
+    "isPublic": true,
+    "introduction": "From crafts to house renovations, share your DIY projects here."
+}
+
+### 다른 그룹 수정 요청 (PUT)
+PUT http://localhost:3000/api/groups/1
+Content-Type: application/json
+
+{
+    "password": "second456",
+    "name": "Updated tester2",
+    "imageUrl": "http://example.com/new-image.jpg",
+    "isPublic": false,
+    "introduction": "Updated group introduction."
+}
+
+### 삭제
+DELETE http://localhost:3000/api/groups/1
+Content-Type: application/json
+
+{
+    "password": "second456"
+}
+
+###그룹 조회
+GET http://localhost:3000/api/groups
+
+###그룹 조회 공개그룹 최신순으로
+GET http://localhost:3000/api/groups?page=1&pageSize=10&sortBy=latest&isPublic=true
+
+###그룹 조회 공개그룹 게시글으로
+GET http://localhost:3000/api/groups?page=2&pageSize=10&sortBy=mostPosted&isPublic=true
+
+###그룹 조회 공개그룹 좋아요로
+GET http://localhost:3000/api/groups?page=2&pageSize=10&sortBy=mostLiked&isPublic=true
+
+### 비공개 그룹 권한
+POST http://localhost:3000/api/groups/10/verify-password
+Content-Type: application/json
+
+{
+    "password": "diy12345"
+}
+
+### 공개 여부 판단 : 공개
+GET http://localhost:3000/api/groups/4/is-public
+
+### 공개 여부 판단: 비공개
+GET http://localhost:3000/api/groups/10/is-public
+
+###공감 누르기
+POST http://localhost:3000/api/groups/1/like
+
+### 공감 누르기 2
+POST http://localhost:3000/api/groups/11/like
+
+### 그룹 상세 조회
+GET http://localhost:3000/api/groups/11

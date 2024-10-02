@@ -1,0 +1,88 @@
+###게시글 등록
+POST http://localhost:3000/api/groups/4/posts
+Content-Type: application/json
+
+{
+	"nickname": "Book",
+	"title": "test 2",
+	"content": "test 2",
+	"postPassword": "password456",
+	"groupPassword": "password456",
+	"imageUrl": "http://example.com/images/books.jpg",
+	"tags": [ "book", "like" ],
+	"location": "bookclub",
+	"moment": "2024-09-30",
+	"isPublic": true
+}
+
+
+###게시글 등록 예시2
+POST http://localhost:3000/api/groups/4/posts
+Content-Type: application/json
+
+{
+	"nickname": "Book",
+	"title": "test 3",
+	"content": "test 3",
+	"postPassword": "password456",
+	"groupPassword": "password456",
+	"imageUrl": "http://example.com/images/books.jpg",
+	"tags": [ "book", "like" ],
+	"location": "bookclub",
+	"moment": "2024-09-30",
+	"isPublic": false
+}
+
+###게시글 조회 latest, mostCommented, mostLiked
+GET http://localhost:3000/api/groups/4/posts?page=1&pageSize=10&sortBy=lastest&keyword=test&isPublic=true
+
+
+###게시글 수정
+PUT http://localhost:3000/api/posts/1
+Content-Type: application/json
+
+{
+    "nickname": "updatedNickname",
+    "title": "updatedTitle",
+    "content": "updatedContent",
+    "postPassword": "password456",
+    "imageUrl": "updatedImageUrl",
+    "tags": ["updatedTag1", "updatedTag2"],
+    "location": "updatedLocation",
+    "moment": "2024-03-01",
+    "isPublic": false
+}
+
+
+###게시글 삭제
+DELETE http://localhost:3000/api/posts/1
+Content-Type: application/json
+
+{
+	"postPassword":"password456"
+}
+
+
+###게시글 상세정보
+GET http://localhost:3000/api/posts/3
+
+
+### 게시글 조회 권한 확인
+POST http://localhost:3000/api/posts/2/verify-password
+Content-Type: application/json
+
+{
+	"postPassword": "password456"
+}
+
+
+###게시글 공감하기
+POST http://localhost:3000/api/posts/2/like
+
+
+###게시글 공개 여부- 공개
+GET http://localhost:3000/api/posts/2/is-public
+
+
+###게시글 공개 여부- 비공개
+GET http://localhost:3000/api/posts/3/is-public
