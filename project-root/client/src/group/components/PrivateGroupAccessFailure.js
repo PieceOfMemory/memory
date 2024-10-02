@@ -20,8 +20,8 @@ const SomeComponent = () => {
       {/* 모달 표시 */}
       {showModal && (
         <ConfirmationModal
-          title="그룹 만들기 성공" // 제목 (변경 가능)
-          message="그룹이 성공적으로 등록되었습니다." // 메시지 (변경 가능)
+          title="비밀번호 오류" // 제목 (변경 가능)
+          message="비밀번호가 틀렸습니다." // 메시지 (변경 가능)
           onClose={handleCloseModal} // 닫기 함수
         />
       )}
