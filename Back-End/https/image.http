@@ -1,0 +1,7 @@
+### 이미지 업로드 예시
+POST http://localhost:3000/api/images
+Content-Type: multipart/form-data
+
+{
+	"image": "../sampleImg.jpg"
+}
