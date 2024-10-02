@@ -1,11 +1,16 @@
 const bodyParser = require('body-parser');
 const groupRoutes = require('./routes/groupRoutes'); // 그룹 라우트 불러오기
 const postRoutes = require('./routes/postRoutes');
+const path = require('path');
 const commentRoutes = require('./routes/commentRoutes');
 const express = require('express');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '../client/build')));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 
 // 그룹 관련 API 라우트 설정
 app.use('/api/groups', groupRoutes);
