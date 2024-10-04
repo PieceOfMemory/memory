@@ -17,9 +17,9 @@ app.get('*', (req, res) => {
 app.use('/api/groups', groupRoutes);
 app.use('/api', postRoutes);
 app.use('/api', commentRoutes);
+app.use('/api', imageRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images'))); // 업로드된 이미지를 정적 파일로 제공
 
-app.use('/api', imageRoutes);
 
 app.listen(3000, () => {
     console.log('Server running on port 3000');
