@@ -187,6 +187,8 @@ exports.getGroupDetails = async(req, res) => {
         if (!group) {
             return res.status(404).json({ message: "Group not found." });
         }
+        const badges = await groupModel.getGroupBadges(groupId);
+        group.badges = badges;
 
         res.status(200).json(group);
     } catch (err) {
