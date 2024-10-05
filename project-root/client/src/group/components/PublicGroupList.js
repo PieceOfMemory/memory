@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './publicGroupList.css';
 
@@ -26,10 +26,25 @@ function PublicGroupList() {
 
   // 공개/비공개 상태가 변경될 때마다 그룹 목록을 업데이트
   useEffect(() => {
-    const filteredGroups = dummyGroups.filter((group) => group.isPublic === isPublic);
-    setGroups(filteredGroups);
-    setVisibleGroups(8); 
-  }, [isPublic]); // 의존성 배열에는 isPublic만 추가
+    const fetchGroups = async () => {
+      try {
+        // 최신순으로 첫 페이지 데이터를 가져오기 위해 수정된 경로
+        const response = await fetch(`/api/groups?page=1&pageSize=10&sortBy=latest&isPublic=${isPublic}`);
+        if (!response.ok) {
+          throw new Error('네트워크 응답에 문제가 있습니다.');
+        }
+        const data = await response.json();
+        setGroups(data);
+      } catch (error) {
+        console.error('데이터를 가져오는 도중 문제가 발생했습니다:', error);
+      }
+    };
+  
+    fetchGroups();
+    setVisibleGroups(8); // 공개/비공개 전환 시 표시할 그룹 개수를 초기화
+  }, [isPublic]);
+  
+   // 의존성 배열에는 isPublic만 추가
 
   // 정렬에 따른 그룹 정렬
   const sortGroups = (type) => {

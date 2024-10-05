@@ -60,7 +60,7 @@ function PostCreate() {
     // API 요청 (여기서는 실제 API 경로를 '/api/posts'로 가정)
     try {
       const response = await fetch("/api/groups/:group/posts", {
-        method: 'POST',
+        method: 'GET',
         body: JSON,
       });
 
