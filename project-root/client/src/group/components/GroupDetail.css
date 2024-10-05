@@ -69,6 +69,7 @@
   gap: 10px;
   margin-top: 10px;
 }
+
 /* 추억 목록 헤더 박스 */
 .memory-header-box {
   display: flex;
@@ -97,7 +98,6 @@
   cursor: pointer;
 }
 
-
 .badge-item {
   padding: 5px 10px;
   background-color: #f5f5f5;
@@ -123,4 +123,76 @@
 
 .send-empathy-button {
   margin-left: auto; /* 우측 정렬 */
+}
+
+/* 추억 목록 */
+.memory-list {
+  display: flex;
+  flex-wrap: wrap; /* 가로로 배치하면서 줄바꿈 */
+  gap: 20px; /* 카드 사이 간격 */
+  justify-content: space-around; /* 공간 균등 배분 */
+}
+
+.memory-card {
+  width: calc(25% - 20px); /* 가로 공간 4등분 */
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden; /* 이미지 및 내용이 박스 밖으로 나가지 않게 */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.memory-card img {
+  width: 100%;
+  height: 200px; /* 카드 이미지 고정 높이 */
+  object-fit: cover; /* 이미지가 박스 크기에 맞게 */
+  border-bottom: 1px solid #ddd;
+}
+
+.memory-info {
+  padding: 15px;
+  text-align: left;
+}
+
+.memory-meta {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.memory-tags {
+  display: flex;
+  gap: 5px;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.memory-tags span {
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 15px;
+}
+
+.memory-stats {
+  font-size: 14px;
+  color: #777;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 더보기 버튼 */
+.load-more-box {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.load-more-button {
+  width: 100%;
+  height: 50px;
+  background-color: #FAFAFA;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './MemoryEditModal.css'; // CSS 파일 연동
+import './PostEdit.css'; // CSS 파일 연동
 
 function MemoryEditModal({ onClose }) {
   const [nickname, setNickname] = useState('');

@@ -6,7 +6,12 @@ import GroupCreateSuccess from './group/components/GroupCreateSuccess';
 import GroupDetail from './group/components/GroupDetail';
 import ConfirmationModal from './group/components/ConfirmationModal';
 import PostCreate from './post/PostCreate';
-
+import PostDetail from './post/PostDetail';
+import PostEdit from './post/PostEdit'; // 추억 수정 컴포넌트 임포트
+import PostDelete from './post/PostDelete'; // 추억 삭제 컴포넌트 임포트
+import CommentCreate from './comment/CommentCreate'; // 댓글 작성 컴포넌트 임포트
+import CommentEdit from './comment/CommentEdit'; // 댓글 수정 컴포넌트 임포트
+import CommentDelete from './comment/CommentDelete'; // 댓글 삭제 컴포넌트 임포트
 
 function App() {
   // 모달 표시를 제어하는 상태
@@ -35,6 +40,23 @@ function App() {
           {/* 추억 작성 페이지 */}
           <Route path="/PostCreate" element={<PostCreate />} />
 
+          {/* 추억 상세 페이지 */}
+          <Route path="/posts/:memoryId" element={<PostDetail />} />
+
+          {/* 추억 수정 페이지 */}
+          <Route path="/PostEdit/:memoryId" element={<PostEdit />} />
+
+          {/* 추억 삭제 페이지 */}
+          <Route path="/PostDelete/:memoryId" element={<PostDelete />} />
+
+          {/* 댓글 작성 페이지 */}
+          <Route path="/CommentCreate" element={<CommentCreate />} />
+
+          {/* 댓글 수정 페이지 */}
+          <Route path="/CommentEdit/:commentId" element={<CommentEdit />} />
+
+          {/* 댓글 삭제 페이지 */}
+          <Route path="/CommentDelete/:commentId" element={<CommentDelete />} />
         </Routes>
 
         {/* 모달 표시: showModal이 true일 때 모달을 렌더링 */}
