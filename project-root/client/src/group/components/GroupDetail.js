@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './GroupDetail.css';
 
 // 더미 데이터
@@ -15,6 +16,25 @@ const dummyGroup = {
 
 function GroupDetail() {
   const [group, setGroup] = useState(dummyGroup);
+  const navigate = useNavigate();
+
+  // 추억 더미 데이터
+  const dummyMemories = Array.from({ length: 8 }, (_, index) => ({
+    id: index + 1,
+    groupName: '달봉이아들',
+    title: '에델바이스 꽃말이 소중한 추억이래요',
+    isPublic: true,
+    tags: ['#인천', '#낚시'],
+    date: '2024.01.19 18:00',
+    likes: 120,
+    comments: 8,
+    imageUrl: 'https://via.placeholder.com/300',
+  }));
+
+  // 추억 올리기 버튼 클릭 핸들러
+  const handleCreateMemory = () => {
+    navigate('/PostCreate'); // PostCreate.js 경로로 이동
+  };
 
   return (
     <div className="group-detail-container">
@@ -50,54 +70,40 @@ function GroupDetail() {
       </div>
 
       {/* 추억 목록 */}
-      <MemoryList />
+      <div className="memory-list-container">
+        <div className="memory-header">
+          <h2>추억 목록</h2>
+          <button className="create-memory-button" onClick={handleCreateMemory}>
+            추억 올리기
+          </button>
+        </div>
+        <div className="memory-list">
+          {dummyMemories.map((memory) => (
+            <div key={memory.id} className="memory-card">
+              <img src={memory.imageUrl} alt="추억 이미지" />
+              <div className="memory-info">
+                <div className="memory-meta">
+                  <span>{memory.groupName}</span> | <span>{memory.isPublic ? '공개' : '비공개'}</span>
+                </div>
+                <h3>{memory.title}</h3>
+                <div className="memory-tags">
+                  {memory.tags.map((tag, index) => (
+                    <span key={index}>{tag}</span>
+                  ))}
+                </div>
+                <div className="memory-stats">
+                  <span>{memory.date}</span>
+                  <span>공감 {memory.likes}</span>
+                  <span>댓글 {memory.comments}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button className="load-more">더보기</button>
+      </div>
     </div>
   );
 }
-
-const MemoryList = () => {
-  // 추억 더미 데이터
-  const dummyMemories = Array.from({ length: 8 }, (_, index) => ({
-    id: index + 1,
-    groupName: '달봉이아들',
-    title: '에델바이스 꽃말이 소중한 추억이래요',
-    isPublic: true,
-    tags: ['#인천', '#낚시'],
-    date: '2024.01.19 18:00',
-    likes: 120,
-    comments: 8,
-    imageUrl: 'https://via.placeholder.com/300',
-  }));
-
-  return (
-    <div className="memory-list-container">
-      <h2>추억 목록</h2>
-      <div className="memory-list">
-        {dummyMemories.map((memory) => (
-          <div key={memory.id} className="memory-card">
-            <img src={memory.imageUrl} alt="추억 이미지" />
-            <div className="memory-info">
-              <div className="memory-meta">
-                <span>{memory.groupName}</span> | <span>{memory.isPublic ? '공개' : '비공개'}</span>
-              </div>
-              <h3>{memory.title}</h3>
-              <div className="memory-tags">
-                {memory.tags.map((tag, index) => (
-                  <span key={index}>{tag}</span>
-                ))}
-              </div>
-              <div className="memory-stats">
-                <span>{memory.date}</span>
-                <span>공감 {memory.likes}</span>
-                <span>댓글 {memory.comments}</span>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      <button className="load-more">더보기</button>
-    </div>
-  );
-};
 
 export default GroupDetail;

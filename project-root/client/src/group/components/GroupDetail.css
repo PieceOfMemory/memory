@@ -1,121 +1,34 @@
-.group-detail-container {
-  width: 80%;
-  margin: auto;
-  padding: 20px;
-}
-
-.group-info {
-  display: flex;
-  margin-bottom: 20px;
-}
-
-.group-image img {
-  width: 300px;
-  height: 300px;
-  border-radius: 8px;
-  margin-right: 20px;
-}
-
-.group-details {
-  flex: 1;
-}
-
-.group-header {
-  font-size: 16px;
-  margin-bottom: 8px;
-}
-
-.group-details h1 {
-  font-size: 36px;
-  margin-bottom: 8px;
-}
-
-.group-stats {
-  font-size: 16px;
-  margin-bottom: 8px;
-}
-
-.group-details p {
-  font-size: 18px;
-  margin-bottom: 16px;
-}
-
-.group-badges {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.badge-item {
-  padding: 8px;
-  background-color: #f0f0f0;
-  border-radius: 8px;
-}
-
-.group-actions {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.send-empathy button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: black;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
+/* 추억 목록 컨테이너 */
 .memory-list-container {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
+/* 추억 목록 헤더 */
+.memory-header {
+  display: flex;
+  justify-content: space-between; /* 제목과 버튼을 양쪽 끝에 배치 */
+  align-items: center; /* 제목과 버튼을 동일한 높이로 정렬 */
+  margin-bottom: 10px;
+}
+
+/* 추억 올리기 버튼 */
+.create-memory-button {
+  padding: 10px 15px;
+  background-color: #000;
+  color: #FAFAFA;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.create-memory-button:hover {
+  background-color: #333;
+}
+
+/* 추억 카드 스타일 */
 .memory-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-}
-
-.memory-card {
-  width: 300px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.memory-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.memory-info {
-  padding: 10px;
-}
-
-.memory-meta {
-  font-size: 14px;
-  margin-bottom: 4px;
-}
-
-.memory-tags {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 8px;
-}
-
-.memory-stats {
-  font-size: 14px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.load-more {
-  margin: 20px auto;
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #ddd;
-  border: none;
-  cursor: pointer;
+  gap: 15px;
 }

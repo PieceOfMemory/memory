@@ -7,6 +7,7 @@ import GroupDetail from './group/components/GroupDetail';
 import ConfirmationModal from './group/components/ConfirmationModal';
 import PostCreate from './post/PostCreate';
 
+
 function App() {
   // 모달 표시를 제어하는 상태
   const [showModal, setShowModal] = useState(false);
@@ -33,6 +34,7 @@ function App() {
           
           {/* 추억 작성 페이지 */}
           <Route path="/PostCreate" element={<PostCreate />} />
+
         </Routes>
 
         {/* 모달 표시: showModal이 true일 때 모달을 렌더링 */}
