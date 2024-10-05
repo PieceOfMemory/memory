@@ -1,0 +1,109 @@
+.group-edit-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* 배경 어둡게 */
+  }
+  
+  .group-edit-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .edit-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"], 
+  input[type="file"], 
+  textarea,
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+  }
+  
+  textarea {
+    resize: none;
+    height: 80px;
+  }
+  
+  .public-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  /* 토글 스위치 스타일 */
+  .toggle-switch {
+    width: 60px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: #ddd;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .toggle-slider {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    transition: left 0.3s ease;
+  }
+  
+  .toggle-slider.public {
+    left: 30px;
+    background-color: green;
+  }
+  
+  .toggle-slider.private {
+    left: 0;
+    background-color: red;
+  }
+  
+  /* 오류 메시지 */
+  .error-text {
+    color: red;
+    font-size: 12px;
+  }
+  
+  /* 수정하기 버튼 */
+  .edit-button {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+  }
+  
+  .edit-button:hover {
+    background-color: #333;
+  }
+  

@@ -13,6 +13,9 @@ import CommentCreate from './comment/CommentCreate'; // 댓글 작성 컴포넌�
 import CommentEdit from './comment/CommentEdit'; // 댓글 수정 컴포넌트 임포트
 import CommentDelete from './comment/CommentDelete'; // 댓글 삭제 컴포넌트 임포트
 
+import GroupEdit from './group/components/GroupEdit';
+import GroupDelete from './group/components/GroupDelete';
+
 function App() {
   // 모달 표시를 제어하는 상태
   const [showModal, setShowModal] = useState(false);
@@ -57,6 +60,12 @@ function App() {
 
           {/* 댓글 삭제 페이지 */}
           <Route path="/CommentDelete/:commentId" element={<CommentDelete />} />
+
+          {/* 그룹 수정 페이지 */}
+          <Route path="/GroupEdit/:groupId" element={<GroupEdit />} />
+
+          {/* 그룹 삭제 페이지 */}
+          <Route path="/GroupDelete/:groupId" element={<GroupDelete />} />
         </Routes>
 
         {/* 모달 표시: showModal이 true일 때 모달을 렌더링 */}
