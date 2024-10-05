@@ -1,34 +1,126 @@
-/* 추억 목록 컨테이너 */
-.memory-list-container {
-  margin-top: 20px;
+.group-detail-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto; /* 가운데 정렬 */
 }
 
-/* 추억 목록 헤더 */
-.memory-header {
+.group-info-box {
   display: flex;
-  justify-content: space-between; /* 제목과 버튼을 양쪽 끝에 배치 */
-  align-items: center; /* 제목과 버튼을 동일한 높이로 정렬 */
-  margin-bottom: 10px;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid #ddd; /* 박스 경계 */
+  border-radius: 10px;
+}
+
+.group-image-container {
+  flex: 0 0 300px; /* 고정 너비 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.group-image {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* 1:1 비율 */
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.group-details {
+  flex: 1; /* 남은 공간 모두 차지 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 세로로 위아래 균일하게 */
+}
+
+.group-header {
+  display: flex;
+  justify-content: space-between; /* 좌우 정렬 */
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.group-title {
+  font-size: 28px; /* 그룹명 큰 글씨 */
+  font-weight: bold;
+  text-align: left;
+  margin: 10px 0;
+}
+
+.group-stats {
+  font-size: 16px; /* 추억 및 공감 수 표시 */
+  margin: 5px 0;
+  color: #555;
+}
+
+.group-introduction {
+  font-size: 18px;
+  margin: 10px 0;
+  color: #777;
+}
+
+.group-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+/* 추억 목록 헤더 박스 */
+.memory-header-box {
+  display: flex;
+  justify-content: center; /* 중앙 정렬 */
+  align-items: center;
+  margin: 20px 0; /* 그룹 정보와 떨어뜨리기 위한 마진 */
+  text-align: center;
+  position: relative; /* 추억 올리기 버튼을 우측 정렬하기 위해 */
+}
+
+.memory-header-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 auto; /* 글씨 중앙 정렬 */
 }
 
 /* 추억 올리기 버튼 */
 .create-memory-button {
-  padding: 10px 15px;
+  position: absolute;
+  right: 0; /* 우측에 고정 */
+  padding: 10px 20px;
   background-color: #000;
-  color: #FAFAFA;
+  color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
+}
+
+
+.badge-item {
+  padding: 5px 10px;
+  background-color: #f5f5f5;
+  border-radius: 15px;
   font-size: 14px;
 }
 
-.create-memory-button:hover {
-  background-color: #333;
+.group-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
-/* 추억 카드 스타일 */
-.memory-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
+.group-action-button,
+.send-empathy-button {
+  padding: 10px 20px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.send-empathy-button {
+  margin-left: auto; /* 우측 정렬 */
 }
