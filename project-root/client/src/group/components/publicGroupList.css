@@ -190,7 +190,20 @@
 
 /* 그룹 타이틀 */
 .group-title {
-  text-align: center;
+  display: flex;
+  justify-content: center; /* 중앙 정렬 */
+  align-items: center;
+  font-family: 'Spoqa Han Sans Neo', sans-serif; /* 글씨체 변경 */
+  font-size: 24px; /* 글씨 크기 */
+  position: relative;
+  margin-bottom: 10px; /* 아래 마진 */
+}
+
+/* 꽃 이미지를 위한 스타일 */
+.group-title img {
+  margin-left: 10px; /* 꽃과 텍스트 간격 */
+  width: 24px; /* 꽃 크기 조절 */
+  height: 24px;
 }
 
 /* 더보기 버튼 */
