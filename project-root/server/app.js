@@ -6,6 +6,7 @@ const commentRoutes = require('./routes/commentRoutes');
 const imageRoutes = require('./routes/imageRoutes');
 const badgeRoutes = require('./routes/badgeRoutes');
 const express = require('express');
+const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,6 +15,7 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 // 그룹 관련 API 라우트 설정
 app.use('/api/groups', groupRoutes);
