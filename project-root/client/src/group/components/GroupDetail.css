@@ -1,69 +1,121 @@
-/* 그룹 상세 정보 컨테이너 */
 .group-detail-container {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  /* 그룹 정보 */
-  .group-info img {
-    width: 100px;
-    height: 100px;
-    border-radius: 8px;
-  }
-  
-  .group-info h1 {
-    font-size: 24px;
-    margin: 10px 0;
-  }
-  
-  .group-info p {
-    font-size: 16px;
-    color: #555;
-  }
-  
-  /* 수정 및 삭제 버튼 */
-  .group-info button {
-    margin: 10px 5px;
-    padding: 8px 12px;
-    border: none;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  /* 비밀번호 입력 모달 */
-  .password-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-  }
-  
-  .password-modal h2 {
-    margin-bottom: 20px;
-  }
-  
-  .password-modal input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  .password-modal button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
+  width: 80%;
+  margin: auto;
+  padding: 20px;
+}
+
+.group-info {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.group-image img {
+  width: 300px;
+  height: 300px;
+  border-radius: 8px;
+  margin-right: 20px;
+}
+
+.group-details {
+  flex: 1;
+}
+
+.group-header {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.group-details h1 {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.group-stats {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.group-details p {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.group-badges {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.badge-item {
+  padding: 8px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+}
+
+.group-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.send-empathy button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.memory-list-container {
+  margin-top: 40px;
+}
+
+.memory-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.memory-card {
+  width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.memory-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.memory-info {
+  padding: 10px;
+}
+
+.memory-meta {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.memory-tags {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.memory-stats {
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.load-more {
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ddd;
+  border: none;
+  cursor: pointer;
+}
