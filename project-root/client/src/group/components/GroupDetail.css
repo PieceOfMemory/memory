@@ -55,6 +55,9 @@
   font-size: 16px; /* 추억 및 공감 수 표시 */
   margin: 5px 0;
   color: #555;
+  display: flex; /* 플렉스 레이아웃 적용 */
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  gap: 15px; /* 추억 수와 공감 수 사이의 간격 */
 }
 
 .group-introduction {
@@ -83,6 +86,7 @@
 .memory-header-title {
   font-size: 24px;
   font-weight: bold;
+  background-color: transparent;
   margin: 0 auto; /* 글씨 중앙 정렬 */
 }
 
@@ -111,7 +115,15 @@
   margin-bottom: 10px;
 }
 
-.group-action-button,
+.group-action-button {
+  padding: 10px 20px;
+  background-color: transparent; /* 배경색을 투명하게 하여 페이지와 동일하게 */
+  color: black; /* 기본 글씨 색상 (수정하기 버튼에 적용) */
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
 .send-empathy-button {
   padding: 10px 20px;
   background-color: #000;
