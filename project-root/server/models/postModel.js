@@ -139,3 +139,11 @@ exports.incrementLikeCount = async(postId) => {
     const [result] = await db.query(query, [postId]);
     return result;
 };
+
+
+// 특정 게시물의 공감 수 가져오기
+exports.getPostById = async(postId) => {
+    const query = 'SELECT * FROM posts WHERE id = ?';
+    const [result] = await db.query(query, [postId]);
+    return result.length ? result[0] : null;
+};

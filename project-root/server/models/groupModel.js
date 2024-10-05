@@ -111,3 +111,31 @@ exports.getGroupAdditionalDetails = async(groupId) => {
         throw err; // 에러를 호출 스택으로 전파하여 적절히 처리할 수 있도록 함
     }
 };
+
+
+// 7일 연속 추억 등록 확인
+exports.getPostCountForLast7Days = async(groupId) => {
+    const query = `
+        SELECT DATE(createdAt) AS day, COUNT(*) AS postCount
+        FROM posts
+        WHERE groupId = ? AND createdAt >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+        GROUP BY day
+        HAVING COUNT(*) >= 1`;
+
+    const [result] = await db.query(query, [groupId]);
+    return result;
+};
+
+
+//배지 상태 조회
+exports.getGroupBadges = async(groupId) => {
+    const query = 'SELECT badges FROM `groups` WHERE id = ?';
+    const [result] = await db.query(query, [groupId]);
+    return result.length ? JSON.parse(result[0].badges) : [];
+};
+
+exports.updateGroupBadges = async(groupId, badges) => {
+    const query = 'UPDATE `groups` SET badges = ? WHERE id = ?';
+    const [result] = await db.query(query, [JSON.stringify(badges), groupId]);
+    return result;
+};

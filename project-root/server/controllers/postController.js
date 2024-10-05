@@ -2,6 +2,7 @@
 const bcrypt = require('bcryptjs');
 const groupModel = require('../models/groupModel');
 const postModel = require('../models/postModel');
+const badgeController = require('../controllers/badgeController');
 
 // 게시글 등록
 exports.createPostInGroup = async(req, res) => {
@@ -47,6 +48,8 @@ exports.createPostInGroup = async(req, res) => {
             moment,
             isPublic
         });
+
+        await badgeController.checkAndAwardBadges(newPost.groupId);
 
         res.status(200).json(newPost);
     } catch (error) {
