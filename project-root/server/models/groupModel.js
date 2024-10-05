@@ -126,13 +126,33 @@ exports.getPostCountForLast7Days = async(groupId) => {
     return result;
 };
 
+// models/groupModel.js
 
-//배지 상태 조회
-exports.getGroupBadges = async(groupId) => {
+exports.getGroupBadges = async (groupId) => {
     const query = 'SELECT badges FROM `groups` WHERE id = ?';
     const [result] = await db.query(query, [groupId]);
-    return result.length ? JSON.parse(result[0].badges) : [];
+    
+    if (!result.length) {
+        return []; // 그룹이 존재하지 않으면 빈 배열 반환
+    }
+
+    const badgesData = result[0].badges;
+
+    // badges 값이 null이거나 빈 값이면 빈 배열 반환
+    if (!badgesData || typeof badgesData !== 'string' || badgesData.trim() === "") {
+        return [];
+    }
+
+    try {
+        // badges가 유효한 JSON 형식인 경우 파싱
+        return JSON.parse(badgesData);
+    } catch (error) {
+        console.error("Error parsing badges:", error);
+        return []; // 파싱 오류 시 빈 배열 반환
+    }
 };
+
+
 
 exports.updateGroupBadges = async(groupId, badges) => {
     const query = 'UPDATE `groups` SET badges = ? WHERE id = ?';
