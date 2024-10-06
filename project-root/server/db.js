@@ -5,7 +5,7 @@ const db = mysql.createPool({
     host: pw.host,
     user: pw.user,
     password: pw.password,
-    database: 'memory'
+    database: 'memoryrds'
 });
 
 module.exports = db;
