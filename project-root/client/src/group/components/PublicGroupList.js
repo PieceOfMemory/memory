@@ -2,82 +2,75 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './publicGroupList.css';
 
-// 더미 그룹 데이터 생성 (컴포넌트 외부에서 정의)
-const dummyGroups = Array.from({ length: 20 }, (_, index) => ({
-  id: index + 1,
-  name: `그룹 ${index + 1}`,
-  introduction: `이것은 그룹 ${index + 1}의 소개입니다.`,
-  isPublic: index % 2 === 0, 
-  dDay: Math.floor(Math.random() * 300), // 숫자로 변경하여 정렬하기 쉽게 수정
-  badges: Math.floor(Math.random() * 5),
-  memories: Math.floor(Math.random() * 20),
-  likes: (Math.random() * 1000).toFixed(1),
-  imageUrl: 'https://via.placeholder.com/300', 
-}));
-
 function PublicGroupList() {
-  const [isPublic, setIsPublic] = useState(true); 
-  const [groups, setGroups] = useState([]); 
-  const [visibleGroups, setVisibleGroups] = useState(8); 
-  const [isSortOpen, setIsSortOpen] = useState(false); // 토글 상태
-  const [sortType, setSortType] = useState('최신순'); // 현재 선택된 정렬 옵션
-  const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태
-  const navigate = useNavigate(); 
+  const [isPublic, setIsPublic] = useState(true);
+  const [groups, setGroups] = useState([]);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const [sortType, setSortType] = useState('latest');
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
-  // 공개/비공개 상태가 변경될 때마다 그룹 목록을 업데이트
-  useEffect(() => {
-    const fetchGroups = async () => {
-      try {
-        // 최신순으로 첫 페이지 데이터를 가져오기 위해 수정된 경로
-        const response = await fetch(`/api/groups?page=1&pageSize=10&sortBy=latest&isPublic=${isPublic}`);
-        if (!response.ok) {
-          throw new Error('네트워크 응답에 문제가 있습니다.');
-        }
-        const data = await response.json();
-        setGroups(data);
-      } catch (error) {
-        console.error('데이터를 가져오는 도중 문제가 발생했습니다:', error);
+  // 그룹 목록을 가져오는 함수
+  const fetchGroups = async (newPage = 1, isLoadMore = false) => {
+    try {
+      // 백엔드 서버 URL 설정
+      const url = `http://localhost:3000/api/groups?page=${newPage}&pageSize=${pageSize}&sortBy=${sortType}&isPublic=${isPublic}&keyword=${searchTerm}`;
+      console.log('Fetching groups with URL:', url);
+
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        // 네트워크 응답이 오류일 때
+        console.error('Response status:', response.status);
+        throw new Error('네트워크 응답에 문제가 있습니다.');
       }
-    };
-  
-    fetchGroups();
-    setVisibleGroups(8); // 공개/비공개 전환 시 표시할 그룹 개수를 초기화
-  }, [isPublic]);
-  
-   // 의존성 배열에는 isPublic만 추가
 
-  // 정렬에 따른 그룹 정렬
-  const sortGroups = (type) => {
-    let sortedGroups;
-    switch (type) {
-      case '최신순':
-        sortedGroups = [...groups].sort((a, b) => a.dDay - b.dDay); // d-day 순서대로 정렬
-        break;
-      case '게시글 많은순':
-        sortedGroups = [...groups].sort((a, b) => b.memories - a.memories); // 추억 수로 정렬
-        break;
-      case '공감순':
-        sortedGroups = [...groups].sort((a, b) => b.likes - a.likes); // 공감 수로 정렬
-        break;
-      case '획득 배지순':
-        sortedGroups = [...groups].sort((a, b) => b.badges - a.badges); // 배지 수로 정렬
-        break;
-      default:
-        sortedGroups = groups;
+      // 응답이 JSON인지 확인
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+        console.log('Fetched data:', data);
+
+        // 데이터 추가 및 업데이트
+        setGroups((prevGroups) => (isLoadMore ? [...prevGroups, ...data.data] : data.data));
+        setTotalPages(data.totalPages);
+        setPage(newPage);
+      } else {
+        // 응답이 JSON이 아닌 경우
+        console.error('Invalid JSON response:', await response.text());
+        throw new Error('올바른 JSON 형식이 아닙니다.');
+      }
+    } catch (error) {
+      console.error('데이터를 가져오는 도중 문제가 발생했습니다:', error);
     }
-    setGroups(sortedGroups);
+  };
+
+  // 공개/비공개 상태가 변경되거나 검색어가 변경될 때마다 그룹 목록 업데이트
+  useEffect(() => {
+    fetchGroups(1);
+  }, [isPublic, sortType, searchTerm]);
+
+  // 정렬 옵션 변경 시
+  const handleSortChange = (type) => {
     setSortType(type);
-    setIsSortOpen(false); // 토글 닫기
+    setIsSortOpen(false); // 정렬 토글 닫기
   };
 
   const handleSortToggle = () => {
-    setIsSortOpen(!isSortOpen); // 토글 열고 닫기
+    setIsSortOpen(!isSortOpen); // 정렬 토글 열고 닫기
   };
 
   const handlePublicClick = () => setIsPublic(true);
   const handlePrivateClick = () => setIsPublic(false);
+
   const handleLoadMore = () => {
-    setVisibleGroups((prev) => prev + 10);
+    const nextPage = page + 1;
+    if (nextPage <= totalPages) {
+      fetchGroups(nextPage, true); // "더보기" 클릭 시 페이지 추가 로드
+    }
   };
 
   const handleGroupClick = (groupId) => {
@@ -91,12 +84,8 @@ function PublicGroupList() {
 
   // 검색 버튼 클릭 또는 엔터키 입력 시 실행
   const handleSearch = (e) => {
-    e.preventDefault(); // 폼의 기본 동작 방지
-    const filteredGroups = dummyGroups.filter(
-      (group) => group.isPublic === isPublic && group.name === searchTerm
-    );
-    setGroups(filteredGroups);
-    setVisibleGroups(filteredGroups.length);
+    e.preventDefault();
+    fetchGroups(1);
   };
 
   return (
@@ -126,13 +115,15 @@ function PublicGroupList() {
 
         {/* 정렬 토글 버튼 */}
         <div className="sort-container">
-          <button className="sort-toggle" onClick={handleSortToggle}>{sortType}</button>
+          <button className="sort-toggle" onClick={handleSortToggle}>
+            {sortType === 'latest' ? '최신순' : sortType === 'mostPosted' ? '게시글 많은순' : sortType === 'mostLiked' ? '공감순' : '획득 배지순'}
+          </button>
           {isSortOpen && (
             <div className="sort-options">
-              <div onClick={() => sortGroups('최신순')}>최신순</div>
-              <div onClick={() => sortGroups('게시글 많은순')}>게시글 많은순</div>
-              <div onClick={() => sortGroups('공감순')}>공감순</div>
-              <div onClick={() => sortGroups('획득 배지순')}>획득 배지순</div>
+              <div onClick={() => handleSortChange('latest')}>최신순</div>
+              <div onClick={() => handleSortChange('mostPosted')}>게시글 많은순</div>
+              <div onClick={() => handleSortChange('mostLiked')}>공감순</div>
+              <div onClick={() => handleSortChange('mostBadge')}>획득 배지순</div>
             </div>
           )}
         </div>
@@ -152,22 +143,22 @@ function PublicGroupList() {
 
       {/* 그룹 리스트 */}
       <div className="group-list">
-        {groups.slice(0, visibleGroups).map((group) => (
+        {groups.map((group) => (
           <div key={group.id} className="group-card" onClick={() => handleGroupClick(group.id)}>
             <div className="group-image-container">
               <img src={group.imageUrl} alt={`${group.name} 이미지`} className="group-image" />
             </div>
             <div className="group-details">
               <div className="group-meta">
-                <span>D+{group.dDay}</span>
+                <span>생성일: {new Date(group.createdAt).toLocaleDateString()}</span>
                 <span>{group.isPublic ? '공개' : '비공개'}</span>
               </div>
               <h4 className="group-name">{group.name}</h4>
               <p className="group-description">{group.introduction}</p>
               <div className="group-stats">
-                <span>획득 배지 {group.badges}</span>
-                <span>추억 {group.memories}</span>
-                <span>그룹 공감 {group.likes}K</span>
+                <span>획득 배지 {group.badgeCount}</span>
+                <span>게시글 {group.postCount}</span>
+                <span>공감 {group.likeCount}</span>
               </div>
             </div>
           </div>
@@ -175,7 +166,7 @@ function PublicGroupList() {
       </div>
 
       {/* 더보기 버튼 */}
-      {groups.length > visibleGroups && (
+      {page < totalPages && (
         <div className="load-more-box">
           <button className="load-more-button" onClick={handleLoadMore}>더보기</button>
         </div>

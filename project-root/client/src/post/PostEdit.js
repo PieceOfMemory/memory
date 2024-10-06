@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import './PostEdit.css'; // CSS 파일 연동
+import { useNavigate, useParams } from 'react-router-dom';
 
 function MemoryEditModal({ onClose }) {
+  const navigate = useNavigate();
+  const { postId } = useParams();
+
   const [nickname, setNickname] = useState('');
   const [title, setTitle] = useState('');
-  const [tags, setTags] = useState('');
+  const [tags, setTags] = useState([]);
   const [location, setLocation] = useState('');
   const [moment, setMoment] = useState('');
   const [image, setImage] = useState(null);
   const [content, setContent] = useState('');
   const [isPublic, setIsPublic] = useState(true);
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   // 이미지 파일 선택 핸들러
   const handleImageChange = (e) => {
@@ -22,15 +27,57 @@ function MemoryEditModal({ onClose }) {
     setIsPublic(!isPublic);
   };
 
+  // 태그 추가 핸들러 (엔터키로 태그 추가)
+  const handleTagAdd = (e) => {
+    if (e.key === 'Enter' && e.target.value) {
+      setTags([...tags, e.target.value]);
+      e.target.value = '';
+    }
+  };
+
+  // 태그 삭제 핸들러
+  const handleTagRemove = (tagToRemove) => {
+    setTags(tags.filter((tag) => tag !== tagToRemove));
+  };
+
   // 수정 완료 버튼 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // 수정된 데이터 처리 로직
-    // 필요에 따라 FormData 또는 JSON 등 적절한 형식 사용
 
-    // 수정 완료 후 모달 닫기
-    onClose();
+    // 데이터 생성
+    const updatedPost = {
+      nickname,
+      title,
+      content,
+      postPassword: password,
+      imageUrl: image, // 서버에 이미지 URL만 저장하는 경우를 가정합니다.
+      tags,
+      location,
+      moment,
+      isPublic,
+    };
+
+    // API 요청 (PUT 메소드)
+    try {
+      const response = await fetch(`/api/posts/${postId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedPost),
+      });
+
+      if (response.ok) {
+        // 수정 성공 시, 상세 페이지로 이동
+        navigate(`/posts/${postId}`);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message);
+      }
+    } catch (error) {
+      setError('수정 요청 중 오류가 발생했습니다.');
+      console.error('오류 발생:', error);
+    }
   };
 
   return (
@@ -83,10 +130,16 @@ function MemoryEditModal({ onClose }) {
           <input
             type="text"
             id="tags"
-            value={tags}
-            onChange={(e) => setTags(e.target.value)}
             placeholder="태그 입력 후 Enter"
+            onKeyPress={handleTagAdd}
           />
+          <div className="tags-list">
+            {tags.map((tag, index) => (
+              <span key={index} onClick={() => handleTagRemove(tag)}>
+                {tag} &#x2715;
+              </span>
+            ))}
+          </div>
 
           {/* 장소 입력 */}
           <label htmlFor="location">장소</label>
@@ -101,7 +154,7 @@ function MemoryEditModal({ onClose }) {
           {/* 추억의 순간 입력 */}
           <label htmlFor="moment">추억의 순간</label>
           <input
-            type="text"
+            type="date"
             id="moment"
             value={moment}
             onChange={(e) => setMoment(e.target.value)}
@@ -124,6 +177,9 @@ function MemoryEditModal({ onClose }) {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="비밀번호를 입력해 주세요"
           />
+
+          {/* 오류 메시지 */}
+          {error && <p className="error-text">{error}</p>}
 
           {/* 수정하기 버튼 */}
           <button type="submit" className="edit-button">수정하기</button>

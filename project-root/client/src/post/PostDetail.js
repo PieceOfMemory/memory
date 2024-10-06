@@ -8,27 +8,28 @@ function PostDetail() {
   const [comments, setComments] = useState([]); // 댓글 상태 추가
   const navigate = useNavigate();
 
-  // 더미 데이터
-  const dummyMemory = {
-    id: memoryId,
-    title: '인천 앞바다에서 무려 60cm 헐치를 낚다!',
-    nickname: '달봉이아들',
-    moment: '2024-01-19 18:00',
-    location: '인천',
-    content: '인천 앞바다에서 헐치를 낚았습니다! ...', // 긴 내용
-    tags: ['#인천', '#낚시'],
-    imageUrl: 'https://via.placeholder.com/600',
-    likes: 120,
-    comments: [
-      { id: 1, author: '대화형AI', content: '축하드립니다!', date: '2024-01-18 21:50' },
-      { id: 2, author: '홍길동', content: '헐치 60cm라니... 저도 가봐야겠어요~', date: '2024-01-18 21:55' },
-    ],
-  };
-
-  // 더미 데이터를 상태에 설정
+  // 게시글 상세 정보 가져오기
   useEffect(() => {
-    setMemory(dummyMemory);
-    setComments(dummyMemory.comments);
+    const fetchMemoryDetails = async () => {
+      try {
+        // API 요청
+        const response = await fetch(`/api/posts/${memoryId}`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          setMemory(data); // 게시글 정보 설정
+          setComments(data.comments || []); // 댓글 정보 설정
+        } else {
+          // 오류 처리
+          const errorData = await response.json();
+          console.error('데이터 가져오기 실패:', errorData.message);
+        }
+      } catch (error) {
+        console.error('데이터 가져오기 에러:', error);
+      }
+    };
+
+    fetchMemoryDetails();
   }, [memoryId]);
 
   // 추억 수정하기
@@ -70,7 +71,7 @@ function PostDetail() {
       <div className="memory-info-box">
         <div className="memory-header">
           <div>
-            <span>{memory.nickname}</span> | <span>공개</span>
+            <span>{memory.nickname}</span> | <span>{memory.isPublic ? '공개' : '비공개'}</span>
           </div>
           <div className="memory-actions">
             <button className="action-button" onClick={handleEditMemory}>추억 수정하기</button>
@@ -81,8 +82,8 @@ function PostDetail() {
         <p className="memory-tags">{memory.tags.join(', ')}</p>
         <div className="memory-stats">
           <span>작성일: {memory.moment}</span> | 
-          <span> 공감 {memory.likes}</span> | 
-          <span> 댓글 {comments.length}</span>
+          <span> 공감 {memory.likeCount}</span> | 
+          <span> 댓글 {memory.commentCount}</span>
           <button className="empathy-button" onClick={handleSendEmpathy}>공감 보내기</button>
         </div>
       </div>

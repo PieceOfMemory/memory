@@ -4,16 +4,11 @@ import './GroupCreate.css'; // CSS import
 
 function GroupCreate() {
   const [name, setName] = useState('');
-  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(''); // Image URL as string
   const [introduction, setIntroduction] = useState('');
   const [isPublic, setIsPublic] = useState(true);
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-
-  // 이미지 파일 선택 핸들러
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-  };
 
   // 그룹 공개 토글 핸들러
   const handleToggle = () => {
@@ -24,26 +19,32 @@ function GroupCreate() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 데이터 생성 (간단한 예시로 FormData 사용)
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('introduction', introduction);
-    formData.append('isPublic', isPublic);
-    formData.append('password', password);
-    if (image) formData.append('image', image);
+    // API 요청 데이터 생성
+    const groupData = {
+      name,
+      introduction,
+      isPublic,
+      password,
+      imageUrl, // Assuming imageUrl is a direct string URL
+    };
 
-    // API 요청 (여기서는 실제 API 경로를 '/api/groups'로 가정)
+    // API 요청
     try {
       const response = await fetch('/api/groups', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(groupData),
       });
 
       if (response.ok) {
-        // 생성 성공 시 성공 페이지로 이동
-        navigate('/GroupCreateSuccess');
+        const result = await response.json(); // 서버 응답 데이터 확인
+        console.log('그룹 생성 성공:', result);
+        navigate('/GroupCreateSuccess'); // 성공 페이지로 이동
       } else {
-        console.error('그룹 생성 실패');
+        const errorData = await response.json();
+        console.error('그룹 생성 실패:', errorData.message);
       }
     } catch (error) {
       console.error('오류 발생:', error);
@@ -67,16 +68,15 @@ function GroupCreate() {
         />
 
         {/* 대표 이미지 입력 */}
-        <label htmlFor="image">대표 이미지</label>
-        <div className="image-input-container">
-          <input
-            type="file"
-            id="image"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-          
-        </div>
+        <label htmlFor="imageUrl">대표 이미지 URL</label>
+        <input
+          type="text"
+          id="imageUrl"
+          value={imageUrl}
+          onChange={(e) => setImageUrl(e.target.value)}
+          placeholder="대표 이미지의 URL을 입력하세요"
+          required
+        />
 
         {/* 그룹 소개 입력 */}
         <label htmlFor="introduction">그룹 소개</label>

@@ -12,20 +12,42 @@ function GroupEdit() {
   const [isPublic, setIsPublic] = useState(true);
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
+  const [editError, setEditError] = useState('');
 
   // 그룹 정보 수정 핸들러
-  const handleEditGroup = (e) => {
+  const handleEditGroup = async (e) => {
     e.preventDefault();
-    // 비밀번호 확인 로직 (더미 확인)
-    if (password !== 'groupPassword123') {
-      setAuthError('비밀번호가 일치하지 않습니다.');
-      return;
+
+    // FormData 객체 생성
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('password', password);
+    formData.append('introduction', introduction);
+    formData.append('isPublic', isPublic);
+    if (image) formData.append('imageUrl', image);
+
+    try {
+      const response = await fetch(`/api/groups/${groupId}`, {
+        method: 'PUT',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // 수정 성공 시 그룹 상세 페이지로 이동
+        navigate(`/group/${groupId}`);
+      } else if (response.status === 403) {
+        // 비밀번호 오류 처리
+        setAuthError('비밀번호가 일치하지 않습니다.');
+      } else {
+        // 기타 오류 처리
+        setEditError(data.message || '그룹 정보를 수정하는 도중 문제가 발생했습니다.');
+      }
+    } catch (error) {
+      setEditError('네트워크 오류가 발생했습니다.');
     }
-    
-    // 수정 로직 (이후에 실제 API 연동 시 사용)
-    console.log('그룹 수정:', { name, image, introduction, isPublic });
-    navigate(`/group/${groupId}`); // 그룹 상세 페이지로 이동
-  };
+};
 
   // 이미지 선택 핸들러
   const handleImageChange = (e) => {
@@ -90,6 +112,7 @@ function GroupEdit() {
           placeholder="그룹 비밀번호를 입력하세요"
         />
         {authError && <p className="error-text">{authError}</p>}
+        {editError && <p className="error-text">{editError}</p>}
 
         {/* 수정하기 버튼 */}
         <button type="submit" className="edit-button">수정하기</button>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './CommentDelete.css'; // CSS 파일 연동
 
-function CommentDelete({ commentId, onClose, onDelete }) {
+function CommentDelete({ commentId, onClose, onDeleteSuccess }) {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -14,15 +14,32 @@ function CommentDelete({ commentId, onClose, onDelete }) {
   const handleDelete = async (e) => {
     e.preventDefault();
 
-    // 비밀번호 및 댓글 ID를 이용한 삭제 처리 로직
-    const response = await onDelete(commentId, password);
+    try {
+      // 서버에 DELETE 요청
+      const response = await fetch(`/api/comments/${commentId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password }),
+      });
 
-    if (response.success) {
-      // 삭제 성공 시 모달 닫기
-      onClose();
-    } else {
-      // 비밀번호 불일치 시 에러 메시지 표시
-      setErrorMessage('비밀번호가 일치하지 않습니다.');
+      if (response.ok) {
+        const result = await response.json();
+        console.log('댓글 삭제 성공:', result.message);
+
+        // 삭제 성공 시 부모 컴포넌트로 성공 상태 전달
+        onDeleteSuccess();
+        onClose();
+      } else {
+        // 오류 처리
+        const errorData = await response.json();
+        console.error('댓글 삭제 실패:', errorData.message);
+        setErrorMessage('댓글 삭제에 실패했습니다. 비밀번호를 확인해 주세요.');
+      }
+    } catch (error) {
+      console.error('댓글 삭제 에러:', error);
+      setErrorMessage('오류가 발생했습니다. 다시 시도해 주세요.');
     }
   };
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './PostCreate.css'; // 필요한 경우 CSS 파일 생성 및 import
 
 function PostCreate() {
@@ -16,6 +16,7 @@ function PostCreate() {
   const [isPublic, setIsPublic] = useState(true);
 
   const navigate = useNavigate();
+  const { groupId } = useParams(); // 그룹 ID를 URL에서 가져오기
 
   // 이미지 파일 선택 핸들러
   const handleImageChange = (e) => {
@@ -45,30 +46,35 @@ function PostCreate() {
     e.preventDefault();
 
     // 데이터 생성 (FormData 사용)
-    const formData = new FormData();
-    formData.append('nickname', nickname);
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('postPassword', postPassword);
-    formData.append('groupPassword', groupPassword);
-    formData.append('isPublic', isPublic);
-    formData.append('moment', moment);
-    formData.append('location', location);
-    if (image) formData.append('imageUrl', image);
-    tags.forEach((tag) => formData.append('tags[]', tag));
+    const payload = {
+      nickname,
+      title,
+      content,
+      postPassword,
+      groupPassword,
+      isPublic,
+      moment,
+      location,
+      imageUrl: image,
+      tags,
+    };
 
-    // API 요청 (여기서는 실제 API 경로를 '/api/posts'로 가정)
+    // API 요청 (그룹에 해당하는 게시글 등록 엔드포인트)
     try {
-      const response = await fetch("/api/groups/:group/posts", {
-        method: 'GET',
-        body: JSON,
+      const response = await fetch(`/api/groups/${groupId}/posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
-        // 생성 성공 시 성공 페이지로 이동
-        navigate('/GroupDetail');
+        // 생성 성공 시 해당 그룹 상세 페이지로 이동
+        navigate(`/group/${groupId}`);
       } else {
-        console.error('추억 등록 실패');
+        const errorData = await response.json();
+        console.error('추억 등록 실패:', errorData.message);
       }
     } catch (error) {
       console.error('오류 발생:', error);

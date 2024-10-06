@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './CommentEdit.css'; // CSS 파일 연동
 
-function CommentEdit({ currentNickname, currentContent, onSubmit }) {
+function CommentEdit({ commentId, currentNickname, currentContent, onSubmit }) {
   const [nickname, setNickname] = useState(currentNickname);
   const [content, setContent] = useState(currentContent);
   const [password, setPassword] = useState('');
@@ -21,7 +21,7 @@ function CommentEdit({ currentNickname, currentContent, onSubmit }) {
   };
 
   // 댓글 수정 버튼 핸들러
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // 입력 유효성 검사
@@ -30,12 +30,43 @@ function CommentEdit({ currentNickname, currentContent, onSubmit }) {
       return;
     }
 
-    // 댓글 수정 처리
-    onSubmit({ nickname, content, password });
+    // 수정할 데이터 구성
+    const commentData = {
+      nickname,
+      content,
+      password,
+    };
 
-    // 입력 필드 초기화 및 에러 메시지 초기화
-    setPassword('');
-    setErrorMessage('');
+    try {
+      // API 요청
+      const response = await fetch(`/api/comments/${commentId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(commentData),
+      });
+
+      if (response.ok) {
+        const updatedComment = await response.json();
+        console.log('댓글 수정 성공:', updatedComment);
+
+        // 수정된 댓글 데이터 전달
+        onSubmit(updatedComment);
+
+        // 입력 필드 초기화 및 에러 메시지 초기화
+        setPassword('');
+        setErrorMessage('');
+      } else {
+        // 오류 처리
+        const errorData = await response.json();
+        console.error('댓글 수정 실패:', errorData.message);
+        setErrorMessage('댓글 수정에 실패했습니다. 다시 시도해 주세요.');
+      }
+    } catch (error) {
+      console.error('댓글 수정 에러:', error);
+      setErrorMessage('오류가 발생했습니다. 다시 시도해 주세요.');
+    }
   };
 
   return (
