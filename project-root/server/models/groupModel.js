@@ -159,3 +159,16 @@ exports.updateGroupBadges = async(groupId, badges) => {
     const [result] = await db.query(query, [JSON.stringify(badges), groupId]);
     return result;
 };
+
+//검색 기능
+exports.searchGroups = async (keyword, page, pageSize) => {
+    const offset = (page - 1) * pageSize;
+    const query = `
+        SELECT id, name, imageUrl, isPublic, introduction
+        FROM \`groups\`
+        WHERE name LIKE ?
+        LIMIT ? OFFSET ?
+    `;
+    const [result] = await db.query(query, [`%${keyword}%`, parseInt(pageSize), parseInt(offset)]);
+    return result;
+};

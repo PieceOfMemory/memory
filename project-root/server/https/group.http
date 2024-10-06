@@ -78,3 +78,6 @@ POST http://localhost:3000/api/groups/11/like
 
 ### 그룹 상세 조회
 GET http://localhost:3000/api/groups/11
+
+###검색 기능
+GET http://localhost:3000/api/search?keyword=example&page=1&pageSize=10

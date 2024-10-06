@@ -147,3 +147,16 @@ exports.getPostById = async(postId) => {
     const [result] = await db.query(query, [postId]);
     return result.length ? result[0] : null;
 };
+
+//검색 기능
+exports.searchPosts = async (keyword, page, pageSize) => {
+    const offset = (page - 1) * pageSize;
+    const query = `
+        SELECT id, groupId, nickname, title, imageUrl, tags, location, moment, isPublic, likeCount, commentCount, createdAt
+        FROM posts
+        WHERE title LIKE ?
+        LIMIT ? OFFSET ?
+    `;
+    const [result] = await db.query(query, [`%${keyword}%`, parseInt(pageSize), parseInt(offset)]);
+    return result;
+};
