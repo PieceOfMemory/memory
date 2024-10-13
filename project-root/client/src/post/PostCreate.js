@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import './PostCreate.css'; // 필요한 경우 CSS 파일 생성 및 import
+import './PostCreate.css'; 
 
 function PostCreate() {
   // 상태 관리
@@ -16,19 +16,14 @@ function PostCreate() {
   const [isPublic, setIsPublic] = useState(true);
 
   const navigate = useNavigate();
-  const { groupId } = useParams(); // 그룹 ID를 URL에서 가져오기
-
-  // 이미지 파일 선택 핸들러
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-  };
+  const { groupId } = useParams();  // URL에서 groupId 가져오기
 
   // 공개 여부 토글 핸들러
   const handleToggle = () => {
     setIsPublic(!isPublic);
   };
 
-  // 태그 추가 핸들러 (간단한 예시)
+  // 태그 추가 핸들러
   const handleTagAdd = (e) => {
     if (e.key === 'Enter' && e.target.value) {
       setTags([...tags, e.target.value]);
@@ -45,28 +40,31 @@ function PostCreate() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 데이터 생성 (FormData 사용)
-    const payload = {
-      nickname,
-      title,
-      content,
-      postPassword,
-      groupPassword,
-      isPublic,
-      moment,
-      location,
-      imageUrl: image,
-      tags,
-    };
-
-    // API 요청 (그룹에 해당하는 게시글 등록 엔드포인트)
     try {
-      const response = await fetch(`/api/groups/${groupId}/posts`, {
+      // 이미지를 Base64로 변환하는 함수 호출
+      const imageUrl = image ? await convertImageToBase64(image) : null;
+
+      // 데이터를 JSON 형식으로 변환
+      const postData = {
+        nickname,
+        title,
+        content,
+        postPassword,
+        groupPassword,
+        isPublic,
+        moment,
+        location,
+        tags,
+        imageUrl
+      };
+
+      // API 요청 (JSON 형식으로 전송)
+      const response = await fetch(`http://localhost:3001/api/groups/${groupId}/posts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(postData),
       });
 
       if (response.ok) {
@@ -79,6 +77,16 @@ function PostCreate() {
     } catch (error) {
       console.error('오류 발생:', error);
     }
+  };
+
+  // 이미지 파일을 Base64로 변환하는 함수
+  const convertImageToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
   };
 
   return (
@@ -115,7 +123,7 @@ function PostCreate() {
             type="file"
             id="image"
             accept="image/*"
-            onChange={handleImageChange}
+            onChange={(e) => setImage(e.target.files[0])}
           />
         </div>
 
