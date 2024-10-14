@@ -2,10 +2,10 @@ const mysql = require("mysql2/promise");
 //const pw = require("./secret.json");
 
 const db = mysql.createPool({
-    host: "memorydb.ct8ok6wguoto.ap-northeast-2.rds.amazonaws.com",
-    user: "wngml",
-    password: "admin1234",
-    database: 'memoryrds'
+    hhost: process.env.DB_HOST,  
+    user: process.env.DB_USER,      
+    password: process.env.DB_PASSWORD, 
+    database: process.env.DB_NAME  
 });
 
 module.exports = db;
