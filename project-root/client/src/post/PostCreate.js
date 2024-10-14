@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import './PostCreate.css'; 
+import './PostCreate.css';
 
 function PostCreate() {
   // 상태 관리
@@ -59,7 +59,7 @@ function PostCreate() {
       };
 
       // API 요청 (JSON 형식으로 전송)
-      const response = await fetch(`http://localhost:3001/api/groups/${groupId}/posts`, {
+      const response = await fetch(`http://localhost:3000/api/groups/${groupId}/posts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
