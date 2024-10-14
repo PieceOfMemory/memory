@@ -1,5 +1,6 @@
 const mysql = require("mysql2/promise");
 //const pw = require("./secret.json");
+require('dotenv').config();
 
 const db = mysql.createPool({
     hhost: process.env.DB_HOST,  
