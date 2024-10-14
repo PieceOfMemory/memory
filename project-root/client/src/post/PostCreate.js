@@ -59,7 +59,7 @@ function PostCreate() {
       };
 
       // API 요청 (JSON 형식으로 전송)
-      const response = await fetch(`http://localhost:3000/api/groups/${groupId}/posts`, {
+      const response = await fetch(`/api/groups/${groupId}/posts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,10 +69,12 @@ function PostCreate() {
 
       if (response.ok) {
         // 생성 성공 시 해당 그룹 상세 페이지로 이동
-        navigate(`/group/${groupId}`);
+        navigate(`/groups/${groupId}`);
       } else {
         const errorData = await response.json();
-        console.error('추억 등록 실패:', errorData.message);
+        console.error('추억 등록 실패:', errorData.message, response.statusText);
+        console.log(JSON.stringify(postData)); // 보낼 데이터를 확인
+
       }
     } catch (error) {
       console.error('오류 발생:', error);

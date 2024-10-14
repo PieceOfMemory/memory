@@ -12,6 +12,8 @@ const searchRoutes = require('./routes/searchRoutes');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(express.json());
+
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.use(express.urlencoded({ extended: true }));

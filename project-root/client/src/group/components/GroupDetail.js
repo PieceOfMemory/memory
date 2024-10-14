@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './GroupDetail.css';
 
@@ -35,7 +35,7 @@ function GroupDetail() {
 
   // 추억 올리기 버튼 클릭 핸들러
   const handleCreateMemory = () => {
-    navigate('/group/:groupId/postCreate');
+    navigate(`/group/${groupId}/postCreate`);
   };
 
   // 그룹 정보 수정하기 버튼 클릭 핸들러
